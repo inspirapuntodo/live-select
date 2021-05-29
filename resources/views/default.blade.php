@@ -1,6 +1,6 @@
 <div
         wire:ignore
-        x-data="select{{$name}}({ data: {{json_encode($options)}}, emptyOptionsMessage: 'Sin resultados para esta búsqueda.', name: '{{$name}}', placeholder: 'Seleccionar opción' })"
+        x-data="select{{$name}}({ initialData: {{json_encode($options)}}, emptyOptionsMessage: 'Sin resultados para esta búsqueda.', name: '{{$name}}', placeholder: 'Seleccionar opción' })"
         x-init="init()"
         @click.away="closeListbox()"
         @keydown.escape="closeListbox()"
@@ -72,6 +72,7 @@
                 </span>
             </li>
             @endif
+  
             <template x-for="(key, index) in Object.keys(options)" :key="index">
                 <li
                         :id="name + 'Option' + focusedOptionIndex"
@@ -79,6 +80,7 @@
                         @mouseenter="focusedOptionIndex = index"
                         @mouseleave="focusedOptionIndex = null"
                         role="option"
+                        x-show="!loading"
                         :aria-selected="focusedOptionIndex === index"
                         :class="{ 'text-white bg-indigo-600': index === focusedOptionIndex, 'text-gray-900': index !== focusedOptionIndex }"
                         class="relative cursor-pointer py-2 pl-3 text-gray-900 cursor-default select-none pr-9"
@@ -103,7 +105,11 @@
             </template>
 
             <div
-                    x-show="! Object.keys(options).length"
+                    x-show="loading"
+                    x-text="loadingMessage"
+                    class="px-3 py-2 text-gray-900 cursor-default select-none"></div>
+            <div
+                    x-show="!loading && !Object.keys(options).length"
                     x-text="emptyOptionsMessage"
                     class="px-3 py-2 text-gray-900 cursor-default select-none"></div>
         </ul>
@@ -111,13 +117,15 @@
 </div>
 
 <script>
-    function select{{$name}}(config) {
+    window.select{{$name}} = function(config) {
         return {
-            data: config.data,
+            initialData: config.initialData,
             emptyOptionsMessage: config.emptyOptionsMessage ?? 'No results match your search.',
+            loadingMessage: config.loadingMessage ?? 'Loading...',
             focusedOptionIndex: null,
             name: config.name,
             open: false,
+            loading: false,
             options: {},
             placeholder: config.placeholder ?? 'Select an option',
             search: '',
@@ -146,20 +154,36 @@
             },
 
             init: function () {
-                this.options = this.data
-                this.value = this.$wire.{{$value}}
+                this.options = this.initialData
+                this.value = this.$wire.{{$model}}
 
                 if (!(this.value in this.options)) {
                     this.value = null
                 }
 
-                this.$watch('search', ((value) => {
-                    if (!this.open || !value) return this.options = this.data
+                this.$watch('search', ( async (value) => {
+                    if (!this.open || !value) {
+                        this.options = this.initialData
+                        return
+                    }
 
-                    this.options = Object.keys(this.data)
-                        .filter((key) => this.data[key].toLowerCase().includes(value.toLowerCase()))
+                    if(this.$wire.searchable) {
+                        this.loading = true
+                        const optionsResult = (await this.$wire.options(value))
+                        this.options = {}
+
+                        for(var key in optionsResult) {
+                            this.options[key] = optionsResult[key]
+                        }
+
+                        this.loading = false
+                        return
+                    }
+
+                    this.options = Object.keys(this.initialData)
+                        .filter((key) => this.initialData[key].toLowerCase().includes(value.toLowerCase()))
                         .reduce((options, key) => {
-                            options[key] = this.data[key]
+                            options[key] = this.initialData[key]
                             return options
                         }, {})
                 }))
@@ -168,12 +192,12 @@
             selectOption: function () {
                 if (!this.open) return this.toggleListboxVisibility()
                 this.value = Object.keys(this.options)[this.focusedOptionIndex]
-                this.$wire.emit(`${value}Updated`, this.value)
+                this.$wire.emit('{{$model}}Updated', this.value)
+                this.initialData[this.value] = this.options[this.value]
                 this.closeListbox()
             },
 
             toggleListboxVisibility: function () {
-                if (this.open) return this.closeListbox()
 
                 this.focusedOptionIndex = Object.keys(this.options).indexOf(this.value)
 

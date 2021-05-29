@@ -8,7 +8,7 @@ class LiveSelect extends Component {
     public $name;
     public $placeholder;
 
-    public $value;
+    public $model;
     public $optionsValues;
 
     public $searchable;
@@ -21,7 +21,7 @@ class LiveSelect extends Component {
 
     public function mount(
         $name,
-        $value = null,
+        $model = null,
         $disabled = false,
         $nullable = false,
         $placeholder = 'Select an option',
@@ -32,30 +32,17 @@ class LiveSelect extends Component {
         $this->name = $name;
         $this->placeholder = $placeholder;
 
-        $this->value = $value;
+        $this->model = $model;
 
         $this->searchable = $searchable;
-        $this->searchTerm = '';
 
         $this->noResultsMessage = $noResultsMessage;
     }
 
     public function render() {
-        if ($this->searchable) {
-            if ($this->isSearching()) {
-                $options = $this->options($this->searchTerm);
-            } else {
-                $options = collect();
-            }
-        } else {
-            $options = $this->options($this->searchTerm);
-        }
+        $options = $this->options($this->searchTerm);
 
-        $this->optionsValues = $options->pluck('value')->toArray();
-
-        if ($this->value != null) {
-            $selectedOption = $this->selectedOption($this->value);
-        }
+        $this->optionsValues = $options;
 
         return view('live-select::default')
         ->with([
@@ -67,8 +54,7 @@ class LiveSelect extends Component {
     }
 
     //
-    public function selectedOption($value)
-    {
+    public function selectedOption($value) {
         return null;
     }
 }
