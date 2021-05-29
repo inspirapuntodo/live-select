@@ -1,0 +1,35 @@
+{
+    "name": "inspirapuntodo/live-select",
+    "description": "Powerful yet simple select",
+    "authors": [
+        {
+            "name": "César Méndez",
+            "email": "mendez@inspira.do"
+        }
+    ],
+    "type": "library",
+    "require": {
+        "php": "^7.4",
+        "illuminate/support": "^6.0|^7.0|^8.0",
+        "livewire/livewire": "^2.4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Inspirapuntodo\\LiveSelect\\": "src"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Inspirapuntodo\\LiveSelect\\LiveSelectServiceProvider"
+            ],
+            "aliases": {
+                "LiveSelect": "Inspirapuntodo\\LiveSelect\\LiveSelectFacade"
+            }
+        }
+    }
+}
