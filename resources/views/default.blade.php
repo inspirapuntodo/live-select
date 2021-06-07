@@ -192,7 +192,7 @@
             selectOption: function () {
                 if (!this.open) return this.toggleListboxVisibility()
                 this.value = Object.keys(this.options)[this.focusedOptionIndex]
-                this.$wire.emit('{{$model}}Updated', [ this.value, this.name ])
+                this.$wire.emit('{{$model}}Updated', this.value)
                 this.initialData[this.value] = this.options[this.value]
                 this.closeListbox()
             },
