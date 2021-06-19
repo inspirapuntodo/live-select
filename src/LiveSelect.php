@@ -7,6 +7,7 @@ use Livewire\Component;
 class LiveSelect extends Component {
     public $name;
     public $placeholder;
+    public $value;
 
     public $model;
     public $optionsValues;
@@ -21,6 +22,7 @@ class LiveSelect extends Component {
 
     public function mount(
         $name,
+        $value = null,
         $model = null,
         $disabled = false,
         $nullable = false,
@@ -37,6 +39,8 @@ class LiveSelect extends Component {
         $this->searchable = $searchable;
 
         $this->noResultsMessage = $noResultsMessage;
+
+        $this->value = $value;
     }
 
     public function render() {
@@ -47,14 +51,6 @@ class LiveSelect extends Component {
         return view('live-select::default')
         ->with([
             'options' => $options,
-            'selectedOption' => $selectedOption ?? null,
-            #'shouldShow' => $shouldShow,
-            #'styles' => $styles,
         ]);
-    }
-
-    //
-    public function selectedOption($value) {
-        return null;
     }
 }

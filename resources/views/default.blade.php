@@ -129,7 +129,7 @@
             options: {},
             placeholder: config.placeholder ?? 'Select an option',
             search: '',
-            value: null,
+            value: '{{$value}}',
             closeListbox: function () {
                 this.open = false
                 this.focusedOptionIndex = null
@@ -155,7 +155,7 @@
 
             init: function () {
                 this.options = this.initialData
-                this.value = this.$wire.{{$model}}
+                this.value = @if($value) '{{$value}}' @else null @endif
 
                 if (!(this.value in this.options)) {
                     this.value = null
