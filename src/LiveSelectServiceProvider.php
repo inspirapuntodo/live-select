@@ -20,28 +20,9 @@ class LiveSelectServiceProvider extends ServiceProvider
             ], 'live-select-views');
         }
 
-        /*
-        Blade::directive('LiveSelectScripts', function () {
-            return <<<'HTML'
-                <script>
-                        window.livewire.on('live-select-focus-search', (data) => {
-                            const el = document.getElementById(`${data.name || 'invalid'}`);
-                            if (!el) {
-                                return;
-                            }
-                            el.focus();
-                        });
-                        window.livewire.on('live-select-focus-selected', (data) => {
-                            const el = document.getElementById(`${data.name || 'invalid'}-selected`);
-                            if (!el) {
-                                return;
-                            }
-                            el.focus();
-                        });
-                    </script>
-HTML;
-
-        });                        */
+        $this->publishes([
+            __DIR__.'/../public' => resource_path('vendor/live-select'),
+        ], 'public');
     }
 
     /**
