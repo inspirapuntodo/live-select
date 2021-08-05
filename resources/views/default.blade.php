@@ -1,6 +1,6 @@
 <div
         wire:ignore
-        x-data="liveSelect({ 'name': '{{$name}}', 'model': '{{$model}}', initialData: {{json_encode($options)}}, emptyOptionsMessage: 'Sin resultados para esta búsqueda.', name: '{{$name}}', placeholder: 'Seleccionar opción', 'value': @if($value) '{{$value}}' @else null @endif })"
+        x-data="liveSelect({ 'name': '{{$name}}', 'model': '{{$model}}', initialData: {{json_encode($options)}}, emptyOptionsMessage: '{{$emptyOptionMessage}}', placeholder: '{{$placeholder}}', 'loadingMessage': '{{$loadingMessage}}', 'value': @if($value) '{{$value}}' @else null @endif })"
         x-init="init()"
         @click.away="closeListbox()"
         @keydown.escape="closeListbox()"
@@ -115,7 +115,3 @@
         </ul>
     </div>
 </div>
-
-<script>
-    
-</script>

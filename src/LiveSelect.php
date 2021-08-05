@@ -8,6 +8,7 @@ class LiveSelect extends Component {
     public $name;
     public $placeholder;
     public $value;
+    public $loadingMessage;
 
     public $model;
     public $optionsValues;
@@ -15,10 +16,10 @@ class LiveSelect extends Component {
     public $searchable;
     public $searchTerm;
 
-    var $disabled;
-    var $nullable;
+    public $disabled;
+    public $nullable;
 
-    public $noResultsMessage;
+    public $emptyOptionMessage;
 
     public function mount(
         $name,
@@ -27,18 +28,20 @@ class LiveSelect extends Component {
         $disabled = false,
         $nullable = false,
         $placeholder = 'Select an option',
+        $loadingMessage = 'Loading...',
+        $emptyOptionMessage = 'No results match your search.',
         $searchable = false,
-        $noResultsMessage = 'No options found',
         $extras = []
     ) {
         $this->name = $name;
-        $this->placeholder = $placeholder;
 
         $this->model = $model;
 
         $this->searchable = $searchable;
 
-        $this->noResultsMessage = $noResultsMessage;
+        $this->placeholder = $placeholder;
+        $this->emptyOptionMessage = $emptyOptionMessage;
+        $this->loadingMessage = $loadingMessage;
 
         $this->value = $value;
     }

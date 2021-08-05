@@ -1,15 +1,15 @@
 window.liveSelect = (config) => {
     return {
         initialData: config.initialData,
-        emptyOptionsMessage: config.emptyOptionsMessage ?? 'No results match your search.',
-        loadingMessage: config.loadingMessage ?? 'Loading...',
+        emptyOptionsMessage: config.emptyOptionsMessage,
+        loadingMessage: config.loadingMessage,
         focusedOptionIndex: null,
         name: config.name,
         model: config.model,
         open: false,
         loading: false,
         options: {},
-        placeholder: config.placeholder ?? 'Select an option',
+        placeholder: config.placeholder,
         search: '',
         value: config.value,
         closeListbox: function () {
