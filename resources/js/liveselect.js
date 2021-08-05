@@ -1,17 +1,17 @@
-function liveSelect(config) {
-        
+window.liveSelect = (config) => {
     return {
         initialData: config.initialData,
         emptyOptionsMessage: config.emptyOptionsMessage ?? 'No results match your search.',
         loadingMessage: config.loadingMessage ?? 'Loading...',
         focusedOptionIndex: null,
         name: config.name,
+        model: config.model,
         open: false,
         loading: false,
         options: {},
         placeholder: config.placeholder ?? 'Select an option',
         search: '',
-        value: '{{$value}}',
+        value: config.value,
         closeListbox: function () {
             this.open = false
             this.focusedOptionIndex = null
@@ -37,7 +37,6 @@ function liveSelect(config) {
 
         init: function () {
             this.options = this.initialData
-            //this.value = @if($value) '{{$value}}' @else null @endif
 
             if (!(this.value in this.options)) {
                 this.value = null
@@ -74,7 +73,7 @@ function liveSelect(config) {
         selectOption: function () {
             if (!this.open) return this.toggleListboxVisibility()
             this.value = Object.keys(this.options)[this.focusedOptionIndex]
-            this.$wire.emitUp('{{$model}}Updated', this.value)
+            this.$wire.emitUp(`${this.model}Updated`, this.value)
             this.initialData[this.value] = this.options[this.value]
             this.closeListbox()
         },
