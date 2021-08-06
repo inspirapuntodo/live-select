@@ -61,7 +61,7 @@
             <li :id="name + 'Option' + focusedOptionIndex" @click="selectOption()" @mouseenter="focusedOptionIndex = -1" @mouseleave="focusedOptionIndex = null"
                     role="option" :aria-selected="focusedOptionIndex === -1" class="relative cursor-pointer py-2 pl-3 text-gray-900 cursor-default select-none pr-9"
                     :class="{ 'text-white bg-indigo-600': focusedOptionIndex === -1, 'text-gray-900': focusedOptionIndex !== -1 }" x-ref="nullableOption">
-                <span x-text="'{{__('general.none')}}'" class="block font-normal truncate" 
+                <span x-text="'{{$noneMessage}}'" class="block font-normal truncate" 
                     :class="{ 'font-semibold': focusedOptionIndex === -1, 'font-normal': focusedOptionIndex !== -1 }">
                 </span>
                 <span x-show="value === null" class="absolute inset-y-0 right-0 flex items-center pr-4 text-indigo-600"
