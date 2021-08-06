@@ -6,12 +6,11 @@ use Livewire\Component;
 
 class LiveSelect extends Component {
     public $name;
-    public $placeholder;
     public $value;
-    public $loadingMessage;
 
     public $model;
     public $optionsValues;
+    public $extras;
 
     public $searchable;
     public $searchTerm;
@@ -20,6 +19,9 @@ class LiveSelect extends Component {
     public $nullable;
 
     public $emptyOptionMessage;
+    public $loadingMessage;
+    public $noneMessage;
+    public $placeholder;
 
     public function mount(
         $name,
@@ -30,6 +32,7 @@ class LiveSelect extends Component {
         $placeholder = 'Select an option',
         $loadingMessage = 'Loading...',
         $emptyOptionMessage = 'No results match your search.',
+        $noneMessage = '',
         $searchable = false,
         $extras = []
     ) {
@@ -42,8 +45,12 @@ class LiveSelect extends Component {
         $this->placeholder = $placeholder;
         $this->emptyOptionMessage = $emptyOptionMessage;
         $this->loadingMessage = $loadingMessage;
+        $this->noneMessage = $noneMessage;
 
         $this->value = $value;
+
+        $this->nullable = $nullable;
+        $this->extras = $extras;
     }
 
     public function render() {
